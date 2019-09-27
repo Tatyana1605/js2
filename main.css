@@ -22,15 +22,15 @@ header {
   height: 100px;
   padding: 0 50px;
 }
-.nav_item {
+.menu {
   display: flex;
 }
 
-.nav_list {
+.menu-item {
   margin-right: 15px;
   
 }
-.nav_list a {
+.menu-item a {
   color: bisque;
   font-size: 20px;
   font-weight: bold;
@@ -78,4 +78,19 @@ footer {
   height: 100px;
   background-color: blueviolet;
   
+}
+
+.btn-menu {
+  position: absolute;
+  right: 20px;
+  top: 75px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+
+  z-index: 1000;
+}
+
+.menuHidden {
+  display: none;
 }

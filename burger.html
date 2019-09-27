@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <form action="#"  >
+    <fieldset  >
+      <h3  >Составь свой бургер.</h3>
+      <fieldset    >
+        <h4>Выберите размер бургера:</h4>
+        <input type="radio" name="size" id="bigburger" value="big"  checked>
+        <label for="bigburger">Большой (100 рублей, 40 калорий)</label><br>
+        <input type="radio" name="size" id="smallburger" value="small"  >
+        <label for="smallburger">Малый (50 рублей, 20 калорий)</label>
+    </fieldset>
+
+    <fieldset  >
+        <h4>Выберите начинку бургера:</h4>
+        <input type="checkbox" name="add" id="cheese"    checked>
+        <label for="cheese">Сыр (10 рублей, 20 калорий)</label><br>
+        <input type="checkbox" name="add" id="salad"  >
+        <label for="salad">Салат (20 рублей, 5 калорий)</label><br>
+        <input type="checkbox" name="add" id="potato"  >
+        <label for="potato">Картофель (15 рублей, 10 калорий)</label><br>
+    </fieldset>
+
+    <fieldset >
+        <h4>Выберите доп. опцию:</h4>
+        <input type="checkbox" checked name="toppings" id="flavoring" value="Spices"  >
+        <label for="seasoning">Посыпать приправой (15 рублей, 0 калорий)</label><br>
+        <input type="checkbox" name="toppings" id="mayonnaise" value="Mayo"  >
+        <label for="mayonnaise">Полить майонезом (20 рублей, 5 калорий)</label><br>
+    </fieldset>
+
+    <button id="check" type="button">Собрать бургер</button>
+
+    <p id="result">Итоговая стоимость: <span id="price">0</span> <br>
+        Кол-во калорий: <span id="calories">0</span></p>
+  </fieldset>
+</form>
+ 
+  <script src="burger.js"></script>
+</body>
+</html>
