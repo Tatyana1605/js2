@@ -90,15 +90,15 @@ class Hamburger {
 
 document.getElementById('check').onclick = function() {
 	 
-  var big  = document.getElementById('bigburger').checked;
-  var small  = document.getElementById('smallburger').checked;
-  var cheese = document.getElementById('cheese').checked;
-  var salad = document.getElementById('salad').checked;
-  var potato = document.getElementById('potato').checked;
-	var flavoring = document.getElementById('flavoring').checked;
-	var mayonnaise = document.getElementById('mayonnaise').checked;
+  let big  = document.getElementById('bigburger').checked;
+  let small  = document.getElementById('smallburger').checked;
+  let cheese = document.getElementById('cheese').checked;
+  let salad = document.getElementById('salad').checked;
+  let potato = document.getElementById('potato').checked;
+	let flavoring = document.getElementById('flavoring').checked;
+	let mayonnaise = document.getElementById('mayonnaise').checked;
 	
-	var hamburger = new Hamburger( salad, potato, cheese, small, big,  flavoring, mayonnaise);
+	let hamburger = new Hamburger( salad, potato, cheese, small, big,  flavoring, mayonnaise);
 	document.getElementById('price').innerHTML = String(hamburger.countPrice() + ' рублей');
 	document.getElementById('calories').innerHTML = String(hamburger.countCalories() + ' калорий');
 };
