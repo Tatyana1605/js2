@@ -1,3 +1,24 @@
+function sendRequest(url) {
+  // pending->fulfulled|rejected
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status !== 200) {
+          reject();
+        }
+        const users = JSON.parse(xhr.responseText);
+
+        resolve(users);
+      }
+    }
+    xhr.send();
+  });
+}
+
+
 class BasketsItem {
    constructor( title, price, number ) {
      this.title = title;
@@ -38,27 +59,36 @@ class BasketsList {
   }
 
   fetchBaskets() {
-  this.baskets = [{
-    title: 'Название', price: 'Цена', number: 'количество',
-  }
+  // this.baskets = [{
+  //   title: 'Название', price: 'Цена', number: 'количество',
+  // }
        
        
-    ];
+  //   ];
+
+    return sendRequest('/baskets')
+      .then((baskets) => {
+        this.baskets = baskets;
+      })
   }
   render() {
-    let Modal = '';
-    this.baskets.forEach(basket => {
-      const basketItem = new BasketsItem( basket.title, basket.price, basket.number);
-      Modal += basketItem.render();
-    });
-    document.querySelector('.btn-menu').innerHTML = Modal;
+    // let Modal = '';
+    // this.baskets.forEach(basket => {
+    //   const basketItem = new BasketsItem( basket.title, basket.price, basket.number);
+    //   Modal += basketItem.render();
+    // });
+    // document.querySelector('.btn-menu').innerHTML = Modal;
+    return this.baskets.map((basket) => new BasketsItem( basket.title, basket.price, basket.number).render()).join('');
   }
 
 }
 
-const listModal = new BasketsList();
-listModal.fetchBaskets();
-listModal.render();
+const baskets = new BasketsList();
+baskets.fetchBaskets().then(() => {
+  document.querySelector('.btn-menu').innerHTML = baskets.render();
+});
+// listModal.fetchBaskets();
+// listModal.render();
 
 const basket = document.querySelector('.cart-button');
 const basketContainer = document.querySelector('.btn-menu');

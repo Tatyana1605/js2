@@ -1,4 +1,22 @@
- 
+function sendRequest(url) {
+  // pending->fulfulled|rejected
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status !== 200) {
+          reject();
+        }
+        const users = JSON.parse(xhr.responseText);
+
+        resolve(users);
+      }
+    }
+    xhr.send();
+  });
+}
 
 
 
@@ -17,52 +35,54 @@ class GoodsItem {
 
 class GoodsList {
   constructor() {
-    this.goods = [];
+    this.items = [];
   }
 
   fetchGoods() {
-    this.goods = [
-      { img: './img/1.jpg', title: 'Gel Polish  Elpaza 9', price: 100  },
-      { img: './img/2.jpg', title: 'Gel Polish  Elpaza 10', price: 120 },
-      { img: './img/3.jpg', title: 'Gel Polish  Elpaza 12', price: 350 },
-      { img: './img/4.jpg', title: 'Gel Polish  Elpaza 20', price: 250 },
-      { img: './img/5.jpg', title: 'Gel Polish  Elpaza 14', price: 250 },
-    ];
+    return sendRequest('/goods')
+    .then((items) => {
+        this.items = items;
+      });
 
+    
     
   }
 
   
 
   render() {
-    let listHtml = '';
-    this.goods.forEach(good => {
-      const goodItem = new GoodsItem(good.img, good.title, good.price);
-      listHtml += goodItem.render();
-    });
-    document.querySelector('.goods-list').innerHTML = listHtml;
+  //   let listHtml = '';
+  //   this.goods.forEach(good => {
+  //     const goodItem = new GoodsItem(good.img, good.title, good.price);
+  //     listHtml += goodItem.render();
+  //   });
+  // //  document.querySelector('.goods-list').innerHTML = listHtml;
+  return this.items.map((item) => new GoodsItem(item.img, item.title, item.price).render()).join('');
   }
   
-   getTotal(){
-  
-  }
+    
 
 }
 
  
 
 
-const list = new GoodsList();
-list.fetchGoods();
-list.render();
+const items = new GoodsList();
+items.fetchGoods().then (() => {
+  document.querySelector('.goods-list').innerHTML = items.render();
+});
+items.render();
 
 
-let items = document.querySelectorAll('.price'),
+
+
+
+// let price = document.querySelectorAll('.price'),
  
-      summa = 0;
+//       summa = 0;
  
-  [].forEach.call( items, function(el) {
-    summa += +el.innerText;
-    });
- console.log(summa);
+//   [].forEach.call( items, function(el) {
+//     summa += +el.innerText;
+//     });
+//  console.log(summa);
  
