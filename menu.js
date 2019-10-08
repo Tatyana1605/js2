@@ -69,9 +69,9 @@ class MenuItem extends Block {
 }
 
 
-const menuItem1 = new MenuItem('Главная', '#');  
+const menuItem1 = new MenuItem('Главная', '/index.html');  
 const menuItem2 = new MenuItem('Католог', '/news');
-const menuItem3 = new MenuItem('Контакты', '/blog');
+const menuItem3 = new MenuItem('Контакты', '/contact.html');
 
 const menu = new Menu('menu', 'menu', [menuItem1, menuItem2, menuItem3]);
  

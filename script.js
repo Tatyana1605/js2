@@ -1,33 +1,22 @@
-function sendRequest(url) {
-  // pending->fulfulled|rejected
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', url);
 
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status !== 200) {
-          reject();
-        }
-        const users = JSON.parse(xhr.responseText);
-
-        resolve(users);
-      }
-    }
-    xhr.send();
-  });
-}
 
 
 
 class GoodsItem {
-  constructor(img, title, price) {
+  constructor(id, img, title, price) {
+    this.id = id;
     this.img = img;
     this.title = title;
     this.price = price;
   }
   render() {
-    return `<div class="goods-item"><img src='${this.img}'><h3>${this.title}</h3><p class='price'>${this.price} </p>&#8381; <button class="btn">Добавить</button></div>`;
+    return `
+    <div class="goods-item">
+    <img src='${this.img}'>
+    <h3>${this.title}</h3>
+    <p class='price'>${this.price} </p>&#8381; 
+    <button data-id="${this.id}" data-title="${this.title}" data-price="${this.price}" class="btn">Добавить</button>
+    </div>`;
   }
 }
 
@@ -36,28 +25,37 @@ class GoodsItem {
 class GoodsList {
   constructor() {
     this.items = [];
+    this.filteredItems = [];
+    this.loaded = false;
   }
 
   fetchGoods() {
-    return sendRequest('/goods')
+    return fetch('/goods')
+    .then(response => response.json())
     .then((items) => {
         this.items = items;
+        this.loaded = true;
+        this.filteredItems = items;
       });
 
     
     
   }
 
+  filter(query) {
+    this.filteredItems = this.items.filter((item) => {
+      const regexp = new RegExp(query, 'i');
+      return regexp.test(item.title);
+    });
+  }
   
 
   render() {
-  //   let listHtml = '';
-  //   this.goods.forEach(good => {
-  //     const goodItem = new GoodsItem(good.img, good.title, good.price);
-  //     listHtml += goodItem.render();
-  //   });
-  // //  document.querySelector('.goods-list').innerHTML = listHtml;
-  return this.items.map((item) => new GoodsItem(item.img, item.title, item.price).render()).join('');
+    if(this.loaded && this.filteredItems.length === 0) {
+      return `<div>Ничего не найдено</div>`;
+    }
+   
+  return this.filteredItems.map((item) => new GoodsItem(item.id, item.img, item.title, item.price).render()).join('');
   }
   
     
@@ -75,14 +73,15 @@ items.render();
 
 
 
+document.querySelector('[name="query"]').addEventListener('input', (event) => {
+  const query = event.target.value;
+   
+    items.filter(query);
+    document.querySelector('.goods-list').innerHTML = items.render();
 
+ 
+  
+});
 
-// let price = document.querySelectorAll('.price'),
  
-//       summa = 0;
- 
-//   [].forEach.call( items, function(el) {
-//     summa += +el.innerText;
-//     });
-//  console.log(summa);
  
