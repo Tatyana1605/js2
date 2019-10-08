@@ -50,7 +50,7 @@ document.getElementById('btn').onclick = function() {
   let errorEmail = document.getElementById('errorEmail');
 
   let Text = document.getElementById('inputText');
-	let templateText = /\w{5, }/;
+	let templateText = /\d{5, }/;
   let errorText = document.getElementById('errorText');
   
 
