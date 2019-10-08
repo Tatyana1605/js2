@@ -3,7 +3,7 @@ class Form {
 		this.input = input;
 		this.template = template;
 		this.error = error;
-		this.success = true;
+		this.send = true;
 	}
 	
 	validateForm() {
@@ -11,7 +11,7 @@ class Form {
      event.preventDefault();
 		
 		if (!inputVal.match(this.template)) {
-			this.success = false;
+			this.send = false;
       this.input.value = '';
       this.error.style.border = '2px solid red';
 			this.error.style.display = 'block';
@@ -30,7 +30,7 @@ class Form {
 	}
 	
 	showResult() {
-		if (this.success) {
+		if (this.send) {
 			document.getElementById('send').style.display = 'block';
 		}
 	}
