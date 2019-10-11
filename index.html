@@ -4,59 +4,80 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
   <link rel="stylesheet" href="main.css">
+
   
   <title>Shop</title>
 </head>
 <body>
-   
-  <header>
-    <div class="wrapper">
-      <div class="header">
-          
-        <div class="header_left">
+   <div id="root">
+    <header>
+      <div class="wrapper">
+        <div class="header">
             
-          <div class="class_menu"  >
+          <div class="header_left">
               
+            <div class="class_menu"  >
+                <ul class="menu" id="menu" >
+                  <li class="menu-item" v-for="item in menus"> <a :href="item.a">{{item.li}}</a></li>
+                </ul>
+            </div>
+           
           </div>
-         
+          <div class="header_right">
+            <input type="text" v-model="query" name="query" placeholder="Поиск">
+            <button @click="handleSearchClick">Поиск</button>
+            <button class="cart-button" type="button">
+              Корзина
+            </button>
+            <div class="btn-menu menuHidden">
+              <ul>
+                <li  class="list" v-for="item in basket">
+                  <h3>{{item.title}}</h3>
+                  <input class="qty" type="number" v-model="item.qty">
+                </li>
+              </ul>
+                
+              <p>Сумма заказа</p>
+              <div class="total"> {{total}} </div>
+            </div>
+          </div>
         </div>
-        <div class="header_right">
-          <input type="text" name="query" placeholder="Поиск">
-          <button class="cart-button" type="button">
-            Корзина
-          </button>
-          <div class="btn-menu menuHidden">
-            <p>Сумма заказа</p>
-            <div class="total"> </div>
+        
+         
+      </div>
+      
+    </header>
+     
+    
+     
+    <main>
+      <div class="wrapper">
+        <div  class="goods-list">
+          <div v-for="item in filteredItems" class="goods-item">
+          <img :src="item.img">
+          <h3>{{item.title}}</h3>
+          <p class='price'>{{item.price}} </p>&#8381; 
+          <button  class="btn" @click="handelBuyClick(item)">Добавить</button>
           </div>
         </div>
       </div>
       
-       
-    </div>
-    
-  </header>
-   
+    </main>
   
-   
-  <main>
-    <div class="wrapper">
-      <div class="goods-list"></div>
-    </div>
-    
-  </main>
-
-  <footer>
-    <div class="wrapper">
-      <div class="footer_left"></div>
-      <div class="footer_right"></div>
-    </div>
-  </footer>
+    <footer>
+      <div class="wrapper">
+        <div class="footer_left"></div>
+        <div class="footer_right"></div>
+      </div>
+    </footer>
+   </div>
+  
 
   
-  <script src="script.js"></script>
-  <script src="menu.js"></script>
-  <script src="basket.js"></script>
+  <script src="vue.js"></script>
+  
+   
 </body>
 </html>
