@@ -27,21 +27,23 @@
           </div>
           <div class="header_right">
             <input type="text" v-model="query" name="query" placeholder="Поиск">
-            <button @click="handleSearchClick">Поиск</button>
-            <button class="cart-button" type="button">
+             
+            <button class="cart-button" type="button" @click="toggleBasket">
               Корзина
             </button>
-            <div class="btn-menu menuHidden">
+            <baskets-list-component :baskets="isBasketVisible" @delet="handelDeletClick"></baskets-list-component>
+            <!-- <div class="btn-menu " v-if="isBasketVisible">
               <ul>
                 <li  class="list" v-for="item in basket">
                   <h3>{{item.title}}</h3>
                   <input class="qty" type="number" v-model="item.qty">
+                  <button @click="handelDeletClick(item.id)"> x </button>
                 </li>
               </ul>
                 
               <p>Сумма заказа</p>
               <div class="total"> {{total}} </div>
-            </div>
+            </div> -->
           </div>
         </div>
         
@@ -54,14 +56,8 @@
      
     <main>
       <div class="wrapper">
-        <div  class="goods-list">
-          <div v-for="item in filteredItems" class="goods-item">
-          <img :src="item.img">
-          <h3>{{item.title}}</h3>
-          <p class='price'>{{item.price}} </p>&#8381; 
-          <button  class="btn" @click="handelBuyClick(item)">Добавить</button>
-          </div>
-        </div>
+        <items-list-component :items="filteredItems" @buy="handelBuyClick"></items-list-component>
+        
       </div>
       
     </main>
