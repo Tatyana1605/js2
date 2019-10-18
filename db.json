@@ -33,13 +33,7 @@
     }
   ],
   "baskets": [
-    {
-      "id": 3,
-      "img": "./img/3.jpg",
-      "title": "Gpl Polish  Elpaza 12",
-      "price": 350,
-      "qty": 3
-    }
+     
   ],
   "menus": [
     {

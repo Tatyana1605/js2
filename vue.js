@@ -1,3 +1,6 @@
+
+
+
 const ItemComponent = {
   props:['id', 'title', 'img', 'price'],
   template:`<div   class="goods-item">
@@ -45,51 +48,93 @@ const ItemsListComponent = {
   },
 };
 
-const BasketComponent = {
-  props:[ 'title','id', 'qty' ],
+const BasketsListComponent = {
+  props:[ 'id', 'title', 'qty'],
   template: `<li  class="list" >
               <h3>{{title}}</h3>
-              <input class="qty" type="number" v-model="qty">
-              <button @click="handelDeletClick(id)"> x </button>
+              <input class="qty" type="number" :value="qty" @input="handelQuantityChange">
+              <button @click="handelDeletClick"> x </button>
             </li>`,
-  methods: {
-    handelDeletClick(id) {
-      this.$emit('delet', id);
+  
+
+  methods:{
+    handelQuantityChange(event) {
+      this.$emit('changed', {id:this.id, qty: event.target.value});
+
+    },
+    handelDeletClick() {
+      this.$emit('deleted', this.id);
     }
-  },
+  }
+
+  
+
 };
 
-const BasketsListComponent = {
-  props: ['baskets'],
+const BasketComponent = {
+  props: ['items'],
   template: `<div class="btn-menu ">
             <ul>
-             <basket-component
-             v-for="basket in baskets"
-             :title="basket.title" 
-             :id="basket.id"
-             :qty="basket.qty"
-             @delet="handelDeletClick(basket)"
-             ></basket-component>
+             <baskets-list-component
+             
+             v-for="item in items"
+             :key="item.id"
+             :title="item.title" 
+             :id="item.id"
+             :qty="item.qty"
+             @changed="handelQuantityChange"
+             @deleted="handelDelet"
+             ></baskets-list-component>
              </ul>
              <p>Сумма заказа</p>
              <div class="total"> {{total}} </div>
              </div>
              `,
-  methods: {
-    handelDeletClick(id) {
-      this.$emit('delet', basket);
-    }
-  },
-  components: {
-    'basket-component': BasketComponent,
+  computed: {
+    total(){
+      return this.items.reduce((acc, item) => acc + item.qty * item.price, 0 );
+    },
   },
    
+        
+   
 
+  components: {
+    'baskets-list-component': BasketsListComponent,
+  },
 
+  methods:{
+    handelQuantityChange(item) {
+      this.$emit('changed', item);
+    },
+    handelDelet(id) {
+      this.$emit('deleted', id);
+    }
+  }
 };
 
 
 
+
+const SearchComponent = {
+  template: `
+    <div>
+      <input type="text" v-model="query" >
+      <button @click="handelSearchClick"> Поиск </button>
+    </div>
+  `,
+  data() {
+    return{
+      query: '',
+    }
+  },
+
+  methods: {
+    handelSearchClick() {
+      this.$emit('search', this.query);
+    }
+  }
+}
 
 
 const app = new Vue({
@@ -165,6 +210,20 @@ const app = new Vue({
     },
     toggleBasket() {
       this.isBasketVisible = !this.isBasketVisible;
+    },
+    onQueryChange(query){
+      this.query = query;
+    },
+    handelBasketChange(item) {
+      const basketItem = this.basket.find((basketItem) => +basketItem.id === +item.id); 
+      basketItem.qty = item.qty;
+      fetch(`/baskets/${item.id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({qty: item.qty }),
+        headers: {
+          'Content-type': 'application/json',
+        }
+      });
     }
   },
   mounted() {
@@ -190,9 +249,7 @@ const app = new Vue({
   },
 
   computed: {
-    total(){
-      return this.basket.reduce((acc, item) => acc + item.qty * item.price, 0 );
-    },
+   
     filteredItems() {
       return this.items.filter((item) => {
         const regexp = new RegExp(this.query, 'i');
@@ -206,6 +263,7 @@ const app = new Vue({
     'item-component': ItemComponent,
     'baskets-list-component': BasketsListComponent,
     'basket-component': BasketComponent,
+    'search-component': SearchComponent,
   },
 }); 
 

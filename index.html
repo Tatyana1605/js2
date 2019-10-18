@@ -26,12 +26,14 @@
            
           </div>
           <div class="header_right">
-            <input type="text" v-model="query" name="query" placeholder="Поиск">
+            <search-component @search="onQueryChange"></search-component>
              
             <button class="cart-button" type="button" @click="toggleBasket">
               Корзина
             </button>
-            <baskets-list-component :baskets="isBasketVisible" @delet="handelDeletClick"></baskets-list-component>
+            <div class="btn-menu " v-if="isBasketVisible">
+              <basket-component :items="basket" @changed="handelBasketChange" @deleted="handelDeletClick"></basket-component>
+            </div>
             <!-- <div class="btn-menu " v-if="isBasketVisible">
               <ul>
                 <li  class="list" v-for="item in basket">

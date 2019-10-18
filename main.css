@@ -37,6 +37,11 @@ header {
   text-decoration: none;
 }
 
+.header_right{
+  display: flex;
+  align-items: center;
+}
+
 .cart-button {
   padding: 10px 15px;
   border-radius: 5px;
